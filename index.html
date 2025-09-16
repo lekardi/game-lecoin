@@ -20,24 +20,48 @@
       align-items: center;
       min-height: 100vh;
       text-align: center;
-      background: linear-gradient(135deg, #8e735b, #3e2d23);
-      color: #333;
+      background: url('bg.png') no-repeat center center/cover;
+      color: #fff;
       padding: 20px;
+      position: relative;
+      animation: fadeInBg 2s ease-in-out;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 0;
+    }
+
+    @keyframes fadeInBg {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .logo {
       width: 120px;
       margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+      animation: fadeIn 1.5s ease-in-out;
     }
 
     .card {
-      background: #fff;
+      position: relative;
+      background: rgba(255,255,255,0.9);
       padding: 30px 20px;
       border-radius: 12px;
       box-shadow: 0px 6px 16px rgba(0,0,0,0.15);
       max-width: 350px;
       width: 100%;
-      animation: fadeIn 1s ease-in-out;
+      animation: slideUp 0.8s ease forwards;
+      z-index: 1;
+      color: #000;
     }
 
     .card h2 {
@@ -51,6 +75,8 @@
       border-radius: 8px;
       width: 100%;
       margin-bottom: 15px;
+      background: #fff;
+      color: #000;
     }
 
     button {
@@ -67,6 +93,7 @@
 
     button:hover {
       background: #7b4c33;
+      transform: scale(1.05);
     }
 
     .game, .result {
@@ -97,9 +124,25 @@
       background: #c32d4e;
     }
 
+    #finalScore {
+      font-size: 20px;
+      font-weight: bold;
+      animation: bounce 1s ease infinite alternate;
+    }
+
     @keyframes fadeIn {
       from {opacity: 0; transform: translateY(20px);}
       to {opacity: 1; transform: translateY(0);}
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes bounce {
+      from { transform: scale(1); }
+      to { transform: scale(1.15); }
     }
   </style>
 </head>
@@ -120,7 +163,7 @@
   <div class="card result" id="result">
     <h2>🎉 Selamat!</h2>
     <p id="finalScore"></p>
-    <p>Screenshot hasil ini dan kirim ke <b>DM IG Le Coin</b> untuk klaim hadiah! 📩</p>
+    <p id="rewardText"></p>
     <button class="ig-btn" onclick="goToInstagram()">📲 DM Instagram Le Coin</button>
   </div>
 
@@ -198,10 +241,22 @@
       document.getElementById("game").style.display = "none";
       document.getElementById("result").style.display = "block";
       document.getElementById("finalScore").innerText = `${player}, skor kamu: ${score}/${questions.length}`;
+
+      let reward = "";
+      if (score === 3) {
+        reward = "🎁 Kamu dapat Diskon 10%! Screenshot hasil ini dan kirim ke DM IG Le Coin 📩";
+      } else if (score === 4) {
+        reward = "🎁 Keren! Kamu dapat Diskon 20%! Screenshot hasil ini dan kirim ke DM IG Le Coin 📩";
+      } else if (score === 5) {
+        reward = "🔥 Perfect! Kamu jawab semua benar! Kamu dapat Voucher Spesial 🎟️, screenshot dan klaim via DM IG Le Coin 📩";
+      } else {
+        reward = "Terima kasih sudah bermain! Coba lagi untuk dapatkan hadiah 🎮";
+      }
+      document.getElementById("rewardText").innerText = reward;
     }
 
     function goToInstagram() {
-      window.open("https://www.instagram.com/lecoin.bwi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==", "_blank");
+      window.open("https://www.instagram.com/lecoin.bwi", "_blank");
     }
   </script>
 </body>
