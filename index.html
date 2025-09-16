@@ -20,7 +20,7 @@
       align-items: center;
       min-height: 100vh;
       text-align: center;
-      background: url('bg.png') no-repeat center center/cover;
+      background: url('bg.png?v=123') no-repeat center center/cover;
       color: #fff;
       padding: 20px;
       position: relative;
@@ -38,17 +38,11 @@
       z-index: 0;
     }
 
-    @keyframes fadeInBg {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
     .logo {
       width: 120px;
       margin-bottom: 20px;
       position: relative;
       z-index: 1;
-      animation: fadeIn 1.5s ease-in-out;
     }
 
     .card {
@@ -59,7 +53,7 @@
       box-shadow: 0px 6px 16px rgba(0,0,0,0.15);
       max-width: 350px;
       width: 100%;
-      animation: slideUp 0.8s ease forwards;
+      animation: fadeIn 1s ease-in-out;
       z-index: 1;
       color: #000;
     }
@@ -93,7 +87,6 @@
 
     button:hover {
       background: #7b4c33;
-      transform: scale(1.05);
     }
 
     .game, .result {
@@ -124,30 +117,19 @@
       background: #c32d4e;
     }
 
-    #finalScore {
-      font-size: 20px;
-      font-weight: bold;
-      animation: bounce 1s ease infinite alternate;
-    }
-
     @keyframes fadeIn {
       from {opacity: 0; transform: translateY(20px);}
       to {opacity: 1; transform: translateY(0);}
     }
 
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes bounce {
-      from { transform: scale(1); }
-      to { transform: scale(1.15); }
+    @keyframes fadeInBg {
+      from {opacity: 0;}
+      to {opacity: 1;}
     }
   </style>
 </head>
 <body>
-  <img src="logo.png" alt="Le Coin Logo" class="logo">
+  <img src="logo.png?v=123" alt="Le Coin Logo" class="logo">
 
   <div class="card" id="welcome">
     <h2>Masukkan Nama Anda</h2>
@@ -168,32 +150,17 @@
   </div>
 
   <script>
+    // Tambah query string otomatis biar cache ke-bypass
+    const version = Date.now();
+    document.querySelector('.logo').src = `logo.png?v=${version}`;
+    document.body.style.backgroundImage = `url('bg.png?v=${version}')`;
+
     const questions = [
-      {
-        q: "Apa biji kopi yang terkenal dari Indonesia?",
-        options: ["Arabica Gayo", "Robusta Brazil", "Liberica Afrika"],
-        answer: "Arabica Gayo"
-      },
-      {
-        q: "Minuman kopi dengan susu panas dan busa tipis adalah?",
-        options: ["Espresso", "Latte", "Americano"],
-        answer: "Latte"
-      },
-      {
-        q: "Kopi hitam tanpa gula biasanya disebut?",
-        options: ["Kopi Tubruk", "Espresso", "Cappuccino"],
-        answer: "Espresso"
-      },
-      {
-        q: "Apa yang biasa jadi teman ngopi di café?",
-        options: ["Gorengan", "Roti & Cake", "Nasi Padang"],
-        answer: "Roti & Cake"
-      },
-      {
-        q: "Café Le Coin ada di kota mana?",
-        options: ["Jakarta", "Banyuwangi", "Bandung"],
-        answer: "Banyuwangi"
-      }
+      { q: "Apa biji kopi yang terkenal dari Indonesia?", options: ["Arabica Gayo", "Robusta Brazil", "Liberica Afrika"], answer: "Arabica Gayo" },
+      { q: "Minuman kopi dengan susu panas dan busa tipis adalah?", options: ["Espresso", "Latte", "Americano"], answer: "Latte" },
+      { q: "Kopi hitam tanpa gula biasanya disebut?", options: ["Kopi Tubruk", "Espresso", "Cappuccino"], answer: "Espresso" },
+      { q: "Apa yang biasa jadi teman ngopi di café?", options: ["Gorengan", "Roti & Cake", "Nasi Padang"], answer: "Roti & Cake" },
+      { q: "Café Le Coin ada di kota mana?", options: ["Jakarta", "Banyuwangi", "Bandung"], answer: "Banyuwangi" }
     ];
 
     let currentQuestion = 0;
